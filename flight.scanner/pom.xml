@@ -60,29 +60,15 @@
 
 	<dependencyManagement>
 		<dependencies>
-		
-	<dependency>
-	    <groupId>org.elasticsearch</groupId>
-	    <artifactId>elasticsearch</artifactId>
-	    <version>2.2.0</version>
-	</dependency>
-<dependency>
-    <groupId>com.google.code.gson</groupId>
-    <artifactId>gson</artifactId>
-    <version>2.3.1</version>
-</dependency>
-		<dependency>
-		<groupId>com.fasterxml.jackson.core</groupId>
-		<artifactId>jackson-core</artifactId>
-		<version>2.6.0-rc3</version></dependency>
-		<dependency><groupId>com.fasterxml.jackson.core</groupId>
-		<artifactId>jackson-databind</artifactId>
-		<version>2.6.0-rc3</version></dependency>
 			<dependency>
-				<groupId>org.glassfish.main.extras</groupId>
-				<artifactId>glassfish-embedded-all</artifactId>
-				<version>${glassfish.embedded.plugin.version}</version>
-				<scope>provided</scope>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-core</artifactId>
+				<version>2.6.0-rc3</version>
+			</dependency>
+			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-databind</artifactId>
+				<version>2.6.0-rc3</version>
 			</dependency>
 			<dependency>
 				<groupId>javax.ws.rs</groupId>
@@ -132,30 +118,18 @@
 				<version>${mockito.version}</version>
 				<scope>test</scope>
 			</dependency>
-<dependency>
-   <groupId>org.glassfish.jersey.media</groupId>
-   <artifactId>jersey-media-moxy</artifactId>
-   <version>2.15</version>
-</dependency>
 		</dependencies>
 	</dependencyManagement>
 
 	<dependencies>
-	
-	<dependency>
-	    <groupId>org.elasticsearch</groupId>
-	    <artifactId>elasticsearch</artifactId>
-	</dependency>
-<dependency>
-    <groupId>com.google.code.gson</groupId>
-    <artifactId>gson</artifactId>
-</dependency>
-<dependency>
-		<groupId>com.fasterxml.jackson.core</groupId>
-		<artifactId>jackson-core</artifactId>
+
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
 		</dependency>
-		<dependency><groupId>com.fasterxml.jackson.core</groupId>
-		<artifactId>jackson-databind</artifactId>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>junit</groupId>
