@@ -7,24 +7,24 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Carrier {
 
 	@JsonProperty(value="CarrierId")
-	private long carrierId;
+	private long CarrierId;
 	
 	@JsonProperty(value="Name")
-	private String name;
+	private String Name;
 
 	public long getCarrierId() {
-		return carrierId;
+		return CarrierId;
 	}
 
 	public void setCarrierId(long carrierId) {
-		this.carrierId = carrierId;
+		this.CarrierId = carrierId;
 	}
 
 	public String getName() {
-		return name;
+		return Name;
 	}
 
 	public void setName(String name) {
-		this.name = name;
+		this.Name = name;
 	}
 }

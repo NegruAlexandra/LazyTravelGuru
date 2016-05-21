@@ -1,6 +1,7 @@
 package com.lta.flight.scanner.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
@@ -9,10 +10,10 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.lta.flight.scanner.entity.Flight;
 import com.lta.flight.scanner.entity.sky.Carrier;
@@ -56,6 +57,7 @@ public class FlightsController {
 			readValue = mapper.readValue(jsonResponse, SkyScannerResponse.class);
 		} catch (IOException e) {
 			e.printStackTrace();
+			return;
 		}
 
 		for (Quote q : readValue.getQuotes()) {
@@ -77,10 +79,53 @@ public class FlightsController {
 
 	public List<Flight> returnFlights(final String userId) {
 		String sorting = "{\"sort\":{\"minPrice\":{\"order\":\"asc\"}}}";
-		String response = client.target(ES_ADDRESS).path("/skyscanner/Quotes").request(MediaType.APPLICATION_JSON)
+		String response = client.target(ES_ADDRESS).path("/skyscanner/Quotes/_search")
+				.request(MediaType.APPLICATION_JSON)
 				.post(Entity.entity(sorting, MediaType.APPLICATION_JSON), String.class);
 		ObjectMapper mapper = new ObjectMapper();
-		return null;
+		List<Quote> quotes = new ArrayList<>();
+		List<Flight> flights = new ArrayList<>();
+		try {
+			JsonNode jsonNode = mapper.readTree(response).get("hits").get("hits");
+			jsonNode.forEach((JsonNode n) -> quotes.add(unmarshallQuote(n.get("_source"))));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		quotes.forEach((Quote q) -> flights.add(mapToFlight(q)));
+		return flights;
+	}
+
+	private Flight mapToFlight(Quote q) {
+		Flight flight = new Flight();
+		if (q.getOutboundLeg() != null) {
+			int carrierId = q.getOutboundLeg().getCarriers()[0];
+
+			String queryResult = client.target(ES_ADDRESS).path("/skyscanner/Carriers/" + carrierId)
+					.request(MediaType.APPLICATION_JSON).get(String.class);
+			ObjectMapper mapper = new ObjectMapper();
+
+			Carrier response = null;
+			try {
+				JsonNode jsonNode = mapper.readTree(queryResult).get("_source");
+				response = mapper.readValue(jsonNode.toString(), Carrier.class);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			flight.setCarrier(response.getName());
+		}
+		flight.setPrice(q.getMinPrice());
+		return flight;
+	}
+
+	private Quote unmarshallQuote(JsonNode q) {
+		ObjectMapper mapper = new ObjectMapper();
+		Quote readValue = null;
+		try {
+			readValue = mapper.readValue(q.toString(), Quote.class);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return readValue;
 	}
 
 }

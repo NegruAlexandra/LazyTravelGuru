@@ -5,15 +5,21 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Quote {
-	@JsonProperty(value="QuoteId")
+	@JsonProperty(value = "QuoteId")
 	private int QuoteId;
-	
-	@JsonProperty(value="MinPrice")
+
+	@JsonProperty(value = "MinPrice")
 	private int MinPrice;
 
-	@JsonProperty(value="Direct")
+	@JsonProperty(value = "Direct")
 	private String Direct;
-	
+
+	@JsonProperty(value = "OutboundLeg")
+	private OutboundLeg OutboundLeg;
+
+	@JsonProperty(value = "InboundLeg")
+	private InboundLeg InboundLeg;
+
 	public String getDirect() {
 		return Direct;
 	}
@@ -37,5 +43,21 @@ public class Quote {
 	public void setMinPrice(int MinPrice) {
 		this.MinPrice = MinPrice;
 	}
-	
+
+	public OutboundLeg getOutboundLeg() {
+		return OutboundLeg;
+	}
+
+	public void setOutboundLeg(OutboundLeg outbound) {
+		this.OutboundLeg = outbound;
+	}
+
+	public InboundLeg getInboundLeg() {
+		return InboundLeg;
+	}
+
+	public void setInboundLeg(InboundLeg inbound) {
+		this.InboundLeg = inbound;
+	}
+
 }

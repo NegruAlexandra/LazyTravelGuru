@@ -7,46 +7,46 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class Place {
 
 	@JsonProperty(value = "PlaceId")
-	private long placeId;
+	private long PlaceId;
 
 	@JsonProperty(value = "IataCode")
-	private String iataCode;
+	private String IataCode;
 
 	@JsonProperty(value = "Name")
-	private String name;
+	private String Name;
 
 	@JsonProperty(value = "SkyscannerCode")
-	private String skyscannerCode;
+	private String SkyscannerCode;
 
 	public long getPlaceId() {
-		return placeId;
+		return PlaceId;
 	}
 
 	public void setPlaceId(long placeId) {
-		this.placeId = placeId;
+		this.PlaceId = placeId;
 	}
 
 	public String getIataCode() {
-		return iataCode;
+		return IataCode;
 	}
 
 	public void setIataCode(String iataCode) {
-		this.iataCode = iataCode;
+		this.IataCode = iataCode;
 	}
 
 	public String getName() {
-		return name;
+		return Name;
 	}
 
 	public void setName(String name) {
-		this.name = name;
+		this.Name = name;
 	}
 
 	public String getSkyscannerCode() {
-		return skyscannerCode;
+		return SkyscannerCode;
 	}
 
 	public void setSkyscannerCode(String skyscannerCode) {
-		this.skyscannerCode = skyscannerCode;
+		this.SkyscannerCode = skyscannerCode;
 	}
 }
