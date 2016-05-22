@@ -10,14 +10,19 @@ import javax.persistence.ManyToMany;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
 
 @Table
 @NamedQueries({
-		@NamedQuery(name = Destination.BY_TAGS, query = "SELECT DISTINCT d, c FROM Destination d, (SELECT COUNT(t.id) cnt, dst FROM Destination dst, Tag t WHERE t IN (dst.tags) and t.id IN :preferredTags AND d.id = dst.id) c WHERE c.dst = d ORDER BY c.cnt DESC") })
+		@NamedQuery(name = Destination.BY_TAGS, query = "SELECT DISTINCT d FROM Destination d, (SELECT COUNT(t.id) cnt, dst.id FROM Destination dst, Tag t WHERE t IN (dst.tags) and t.id IN :preferredTags GROUP BY dst.id) c WHERE c.id = d.id ORDER BY c.cnt DESC") })
 @Entity
+@XmlRootElement
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Destination {
 
-	public static final String BY_TAGS = "byTags";
+	public transient static final String BY_TAGS = "byTags";
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;

@@ -24,8 +24,8 @@ public class DestinationsController {
 			x.add(t.getId());
 		}
 		Query q = em.createNamedQuery(Destination.BY_TAGS).setParameter("preferredTags", x);
-		List resultList = q.getResultList();
-		return resultList;
+		List<Destination> result = q.getResultList();
+		return result;
 	}
 
 	public void addTestData() {

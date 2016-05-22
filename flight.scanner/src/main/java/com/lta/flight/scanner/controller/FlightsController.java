@@ -97,6 +97,16 @@ public class FlightsController {
 
 	private Flight mapToFlight(Quote q) {
 		Flight flight = new Flight();
+		flight.setCarrier(resolveCarrier(q));
+		flight.setDestination(resolveDestination(q));
+		flight.setDeparture(resolveDeparture(q));
+		flight.setCurrency("EUR");
+		flight.setPrice(q.getMinPrice());
+		return flight;
+	}
+	
+	private String resolveCarrier(Quote q) {
+		String carrier = null;
 		if (q.getOutboundLeg() != null) {
 			int carrierId = q.getOutboundLeg().getCarriers()[0];
 
@@ -111,10 +121,51 @@ public class FlightsController {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
-			flight.setCarrier(response.getName());
+			carrier = response.getName();
 		}
-		flight.setPrice(q.getMinPrice());
-		return flight;
+		return carrier;
+	}
+	
+	private String resolveDestination(Quote q) {
+		String destination = null;
+		if (q.getOutboundLeg() != null) {
+			int destId = q.getOutboundLeg().getDestination();
+
+			String queryResult = client.target(ES_ADDRESS).path("/skyscanner/Places/" + destId)
+					.request(MediaType.APPLICATION_JSON).get(String.class);
+			ObjectMapper mapper = new ObjectMapper();
+
+			Place response = null;
+			try {
+				JsonNode jsonNode = mapper.readTree(queryResult).get("_source");
+				response = mapper.readValue(jsonNode.toString(), Place.class);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			destination = response.getName();
+		}
+		return destination;
+	}
+	
+	private String resolveDeparture(Quote q) {
+		String departure = null;
+		if (q.getOutboundLeg() != null) {
+			int departId = q.getOutboundLeg().getOrigin();
+
+			String queryResult = client.target(ES_ADDRESS).path("/skyscanner/Places/" + departId)
+					.request(MediaType.APPLICATION_JSON).get(String.class);
+			ObjectMapper mapper = new ObjectMapper();
+
+			Place response = null;
+			try {
+				JsonNode jsonNode = mapper.readTree(queryResult).get("_source");
+				response = mapper.readValue(jsonNode.toString(), Place.class);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			departure = response.getName();
+		}
+		return departure;
 	}
 
 	private Quote unmarshallQuote(JsonNode q) {
