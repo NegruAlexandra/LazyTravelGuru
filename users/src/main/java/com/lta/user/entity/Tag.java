@@ -1,4 +1,4 @@
-package com.lta.destination.finder.entity;
+package com.lta.user.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

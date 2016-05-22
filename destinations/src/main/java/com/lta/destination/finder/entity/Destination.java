@@ -16,7 +16,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @Table
 @NamedQueries({
-		@NamedQuery(name = Destination.BY_TAGS, query = "SELECT DISTINCT d FROM Destination d, (SELECT COUNT(t.id) cnt, dst.id FROM Destination dst, Tag t WHERE t IN (dst.tags) and t.id IN :preferredTags GROUP BY dst.id) c WHERE c.id = d.id ORDER BY c.cnt DESC") })
+		@NamedQuery(name = Destination.BY_TAGS, query = "SELECT DISTINCT d FROM Destination d, (SELECT COUNT(t.id) cnt, dst.id FROM Destination dst, Tag t WHERE t IN (dst.tags) and t.name IN :preferredTags GROUP BY dst.id) c WHERE c.id = d.id ORDER BY c.cnt DESC") })
 @Entity
 @XmlRootElement
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -31,6 +31,8 @@ public class Destination {
 	private List<Tag> tags;
 
 	private String name;
+
+	private String airport;
 
 	public Long getId() {
 		return id;
@@ -54,6 +56,14 @@ public class Destination {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getAirport() {
+		return airport;
+	}
+
+	public void setAirport(String airport) {
+		this.airport = airport;
 	}
 
 }
